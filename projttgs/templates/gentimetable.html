@@ -147,7 +147,7 @@ form fieldset{
 	margin-right: auto;
 	line-height: 26px;
 	font-size: 16px;
-	align: center;
+	align-items: center;
 }
     </style>
 
@@ -181,31 +181,51 @@ form fieldset{
         {% for section in sections %}
 <h2 class="secHead">{{ section.section_id }} ({{ section.department }})</h2>
     <table class="table2">
-      <colgroup>
+      <!-- <colgroup>
         <col>
         <col>
         <col>
         <col>
         <col>
         <col>
-      </colgroup>
+      </colgroup> -->
       <tr>
-        <th>Class #</th>
+        <!-- <th>Class #</th>
         <th>Course</th>
         <th>Venue(Block- Room)</th>
         <th>Instructor</th>
-        <th>Class Timing</th>
+        <th>Class Timing</th> -->
+        <th>Days</th>
+        {% for time in times %}
+         
+          <th>{{ time }}</th>
+   
+        {% endfor %}
       </tr>
-      {% for class in schedule %}
-        {% if class.section == section.section_id %}
-        <tr>
-          <th>{{class.section_id}}</th>
-          <td>{{class.course}}</td>
-          <td>{{class.room}}</td>
-          <td>{{class.instructor}}</td>
-          <td>{{class.meeting_time}}</td>
+      {% for day in days %}
+      <tr>
+        <th>{{ day }}</th>
+        {% for time_slot in times %}
+        <td>
+          <!-- {% if class.section == section.section_id %}
+          <tr>
+            <th>{{class.section_id}}</th>
+            <td>{{class.course}}</td>
+            <td>{{class.room}}</td>
+            <td>{{class.instructor}}</td>
+        
+          </tr>
+          {% endif %} -->
+          {% for class in schedule %}
+          {% if class.meeting_time == time_slot %}
+              {{ class.course }}<br>
+              {{ class.room }}<br>
+              {{ class.instructor }}
+          {% endif %}
+      {% endfor %}
+        </td>
+        {% endfor %}
         </tr>
-        {% endif %}
       {% endfor %}
     </table>
 

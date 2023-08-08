@@ -262,9 +262,9 @@ fieldset button
 
 .table2 {
 
-  border: 25px ridge;
+  /* border: 25px ridge; */
   border-color: #257a7a;
-  box-shadow: 6px 13px 13px 0px black;
+  /* box-shadow: 6px 13px 13px 0px black; */
   background-color: #ebfffa;
   letter-spacing: 1px;
   font-size: 1.0rem;

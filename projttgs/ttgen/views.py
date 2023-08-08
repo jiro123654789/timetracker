@@ -221,7 +221,7 @@ def timetable(request):
         schedule = population.get_schedules()[0].get_classes()
 
     return render(request, 'gentimetable.html', {'schedule': schedule, 'sections': Section.objects.all(),
-                                              'times': MeetingTime.objects.all()})
+                                              'times': MeetingTime.objects.all(), 'days': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']})
 
 ############################################################################
 
