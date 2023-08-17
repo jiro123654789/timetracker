@@ -44,7 +44,7 @@ class Instructor(models.Model):
     name = models.CharField(max_length=25)
 
     def __str__(self):
-        return f'{self.uid} {self.name}'
+        return f'{self.name}'
 
 
 class MeetingTime(models.Model):
@@ -53,17 +53,17 @@ class MeetingTime(models.Model):
     day = models.CharField(max_length=15, choices=DAYS_OF_WEEK)
 
     def __str__(self):
-        return f'{self.pid} {self.day} {self.time}'
+        return f'{self.day} {self.time}'
 
 
 class Course(models.Model):
-    course_number = models.CharField(max_length=5, primary_key=True)
+    course_number = models.CharField(max_length=15, primary_key=True)
     course_name = models.CharField(max_length=40)
     max_numb_students = models.CharField(max_length=65)
     instructors = models.ManyToManyField(Instructor)
 
     def __str__(self):
-        return f'{self.course_number} {self.course_name}'
+        return f'{self.course_name}'
 
 
 class Department(models.Model):

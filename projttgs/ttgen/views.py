@@ -219,9 +219,11 @@ def timetable(request):
         population = geneticAlgorithm.evolve(population)
         population.get_schedules().sort(key=lambda x: x.get_fitness(), reverse=True)
         schedule = population.get_schedules()[0].get_classes()
+        
+             
 
     return render(request, 'gentimetable.html', {'schedule': schedule, 'sections': Section.objects.all(),
-                                              'times': MeetingTime.objects.all(), 'days': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']})
+                                              'times': MeetingTime.objects.all()})
 
 ############################################################################
 
