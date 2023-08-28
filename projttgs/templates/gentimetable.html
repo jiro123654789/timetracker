@@ -1,217 +1,279 @@
 {% load static %}
 <html lang="en">
+
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>TTGS | Generate Timetable</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
-    <script src="render.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
-    <script type="text/javascript" language="JavaScript">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TTGS | Generate Timetable</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
+  <script src="render.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+  <script type="text/javascript" language="JavaScript">
+
+    window.addEventListener("load", function () {
+      console.log("fully loaded...")
+      const timeTable = this.document.getElementById("timetable");
+      const teacherTimeTable = this.document.getElementById('teacherTableContainer')
+      console.log("time table", timeTable)
+
+
+      timetable.querySelectorAll('section').forEach(section => {
+        const header = section.querySelector('h2.secHead').textContent;
+        const instructorHeader = `Instructor: ${header}`;
+
+        const rows = Array.from(section.querySelectorAll('table tbody tr'));
+        const newTableHTML = `
+        <table class="table2">${rows.map(row => {
+
+          let rowCell = row.querySelectorAll('td');
+          if (rowCell.length <= 0) {
+            rowCell = row.querySelectorAll('th')
+          }
+
+          const [course, venue, instructor, dayTime] = rowCell
+          return `
+                <tr>
+                    <td>${instructor.textContent}</td>
+                    <td>${venue.textContent}</td>
+                    <td>${course.textContent}</td>
+                    <td>${dayTime.textContent}</td>
+                </tr>`;
+        }).join('')}</table>`;
+
+
+        teacherTimeTable.innerHTML += (`<section>
+            <h2>${instructorHeader}</h2>
+            ${newTableHTML}
+             </section>`);
+
+      });
+
+    });
+
     window.onload = function () {
-    document.getElementById("download")
+      document.getElementById("download")
         .addEventListener("click", () => {
-            const invoice = this.document.getElementById("timetable");
-            console.log(invoice);
-            console.log(window);
-            var opt = {
-                margin: 1,
-                filename: 'Timetable.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
-            };
-            html2pdf().from(invoice).set(opt).save();
+          const invoice = this.document.getElementById("timetable");
+          console.log(invoice);
+          console.log(window);
+          var opt = {
+            margin: 1,
+            filename: 'Timetable.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+          };
+          html2pdf().from(invoice).set(opt).save();
         })
-}</script>
-    <style>
+    }</script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
 
-      *{
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+    }
 
-}
-
-html{
-	scroll-behavior: smooth;
-}
-
-a{
-	text-decoration:none;
-}
-
-h1, h2, h3, h4, h5{
-    text-align: center;
-    font-family: times new roman;
-}
-
-button
-{
-	border-style:none;
-}
-.main
-{
-	max-width: 1200px;
-	height: auto;
-	margin:0 auto;
-}
-
-form {
-	margin-top: 3%;
-	margin-left: 18%;
-	margin-right: 12%;
-}
-
-form fieldset{
-	padding: 50px;
-	border-width: 25px;
-	border-style: ridge;
-	border-color: #257a7a;
-	box-shadow: 6px 13px 13px 0px black;
-	background-color: #fff;
-
-}
-
-.secHead{
-	margin-top: 20px;
-	margin-bottom: 20px;
-	margin-left: 120px;
-	color:#3e4242;
-	font-size: 1.8rem;
-}
-
-.table2{
-    margin-bottom: 100px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.table2 {
-
-  border: 25px ridge;
-  border-color: #5a5a5a;
-  box-shadow: 6px 13px 13px 0px black;
-  background-color: #fff;
-  letter-spacing: 1px;
-  font-size: 1.0rem;
-}
-
-.table2 td, th {
-  border: 1px solid rgb(190,190,190);
-  padding: 10px 20px;
-
-}
-
-.table2 th{
-	color: #5a5a5a;
-	font-weight: bolder;
-}
-
-.table2 td {
-  text-align: center;
-}
-
-.table1{
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  overflow: hidden;
-}
-
-.table1 td, th{
-    border-top: 1px solid #5a5a5a;
-    padding: 10px;
-  }
+    .page-break {
+      page-break-after: always;
+    }
 
 
-.table1 th{
-    background-color: #5a5a5a;
-    color: #fff;
-  }
+    html {
+      scroll-behavior: smooth;
+    }
 
-.submit{
-	margin-left: auto;
-	color: #fff;
-	background-color: #5a5a5a;
-	border-radius: 3px;
-	padding: 13px 39px;
-	text-align: center;
-	letter-spacing: 0.9px;
-	text-decoration: none;
-	margin-right: auto;
-	line-height: 26px;
-	font-size: 16px;
-	align-items: center;
-}
-    </style>
+    a {
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      text-align: center;
+      font-family: times new roman;
+    }
+
+    button {
+      border-style: none;
+    }
+
+    .main {
+      max-width: 1200px;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    form {
+      margin-top: 3%;
+      margin-left: 18%;
+      margin-right: 12%;
+    }
+
+    form fieldset {
+      padding: 50px;
+      border-width: 25px;
+      border-style: ridge;
+      border-color: #257a7a;
+      box-shadow: 6px 13px 13px 0px black;
+      background-color: #fff;
+
+    }
+
+    .secHead {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      margin-left: 120px;
+      color: #3e4242;
+      font-size: 1.8rem;
+    }
+
+    .table2 {
+      margin-bottom: 100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .table2 {
+
+      border: 25px ridge;
+      border-color: #5a5a5a;
+      box-shadow: 6px 13px 13px 0px black;
+      background-color: #fff;
+      letter-spacing: 1px;
+      page-break-after: always;
+      font-size: 1.0rem;
+    }
+
+    .table2 td,
+    th {
+      border: 1px solid rgb(190, 190, 190);
+      padding: 10px 20px;
+
+    }
+
+    .table2 th {
+      color: #5a5a5a;
+      font-weight: bolder;
+    }
+
+    .table2 td {
+      text-align: center;
+    }
+
+    .table1 {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .table1 td,
+    th {
+      border-top: 1px solid #5a5a5a;
+      padding: 10px;
+    }
+
+
+    .table1 th {
+      background-color: #5a5a5a;
+      color: #fff;
+    }
+
+    .submit {
+      margin-left: auto;
+      color: #fff;
+      background-color: #5a5a5a;
+      border-radius: 3px;
+      padding: 13px 39px;
+      text-align: center;
+      letter-spacing: 0.9px;
+      text-decoration: none;
+      margin-right: auto;
+      line-height: 26px;
+      font-size: 16px;
+      align-items: center;
+    }
+  </style>
 
 </head>
+
 <body>
-<script type="text/javascript">
-        var checkList = document.getElementById('list1');
-        var items = document.getElementById('items');
-        checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
-            if (items.classList.contains('visible')){
-                items.classList.remove('visible');
-                items.style.display = "none";
-            }
+  <script type="text/javascript">
+    var checkList = document.getElementById('list1');
+    var items = document.getElementById('items');
+    checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
+      if (items.classList.contains('visible')) {
+        items.classList.remove('visible');
+        items.style.display = "none";
+      }
 
-            else{
-                items.classList.add('visible');
-                items.style.display = "block";
-            }
-        }
+      else {
+        items.classList.add('visible');
+        items.style.display = "block";
+      }
+    }
 
-        items.onblur = function(evt) {
-            items.classList.remove('visible');
-        }
+    items.onblur = function (evt) {
+      items.classList.remove('visible');
+    }
 
-    </script>
-        <br><br>
-        <div id="timetable">
-        <h1>GCTU | Generated Timetable</h1><br>
-        {% block content %}
-        {% load static %}
-        {% for section in sections %}
-<h2 class="secHead">{{ section.section_id }} ({{ section.department }})</h2>
-    <table class="table2">
-      <colgroup>
-        <col>
-        <col>
-        <col>
-        <col>
-        <col>
-        <col>
-      </colgroup>
-      <tr>
-        <th>Course</th>
-        <th>Venue(Block- Room)</th>
-        <th>Instructor</th>
-        <th>Day / Time</th>
-      </tr>
+  </script>
+  <br><br>
+  <div id="timetable">
+    <h1>GCTU | Generated Timetable</h1><br>
+    {% block content %}
+    {% load static %}
+    {% for section in sections %}
+    <section>
+      <h2 class="secHead">{{ section.section_id }} ({{ section.department }})</h2>
+      <table class="table2">
+        <colgroup>
+          <col>
+          <col>
+          <col>
+          <col>
+          <col>
+          <col>
+        </colgroup>
+        <tr>
+          <th>Course</th>
+          <th>Venue(Block- Room)</th>
+          <th>Instructor</th>
+          <th>Day / Time</th>
+        </tr>
         {% for class in schedule %}
-          {% if class.section == section.section_id %}
-          <tr>
-            <td>{{class.course}}</td>
-            <td>{{class.room}}</td>
-            <td>{{class.instructor}}</td>
-            <td>{{class.meeting_time}}</td>
-        
-          </tr>
-          {% endif %}
-      {% endfor %}
-    </table>
+        {% if class.section == section.section_id %}
+        <tr>
+          <td>{{class.course}}</td>
+          <td>{{class.room}}</td>
+          <td>{{class.instructor}}</td>
+          <td>{{class.meeting_time}}</td>
 
-{% endfor %}
-{% endblock %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </table>
+    </section>
 
-        </div>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class="submit" id="download">Download</button>
+    {% endfor %}
+    {% endblock %}
+
+    <div id="teacherTableContainer">
+
+    </div>
+
+
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button
+    class="submit" id="download">Download</button>
 </body>
+
 </html>
