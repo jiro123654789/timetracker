@@ -55,22 +55,49 @@
 
     });
 
+    // window.onload = function () {
+    //   document.getElementById("download")
+    //     .addEventListener("click", () => {
+    //       const invoice = this.document.getElementById("timetable");
+    //       console.log("invoice is ", invoice);
+    //       console.log(window);
+    //       var opt = {
+    //         margin: 1,
+    //         filename: 'Timetable.pdf',
+    //         image: { type: 'jpeg', quality: 0.98 },
+    //         html2canvas: { scale: 2 },
+    //         jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+    //       };
+    //       html2pdf().from(invoice).set(opt).save();
+    //     })
+    // }
     window.onload = function () {
-      document.getElementById("download")
-        .addEventListener("click", () => {
-          const invoice = this.document.getElementById("timetable");
-          console.log(invoice);
-          console.log(window);
-          var opt = {
-            margin: 1,
-            filename: 'Timetable.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
-          };
-          html2pdf().from(invoice).set(opt).save();
-        })
-    }</script>
+  const sections = document.querySelectorAll("#timetable section");
+
+  sections.forEach((section) => {
+    const title = section.querySelector("h2").textContent;
+    const button = document.createElement("button");
+    button.textContent = `Download ${title} PDF`;
+    section.appendChild(button);
+
+    button.addEventListener("click", () => {
+      const invoice = section;
+      const fileName = `${title}.pdf`;
+
+      var opt = {
+        margin: 1,
+        filename: fileName,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+      };
+
+      html2pdf().from(invoice).set(opt).save();
+    });
+  });
+}
+
+    </script>
   <style>
     * {
       margin: 0;
