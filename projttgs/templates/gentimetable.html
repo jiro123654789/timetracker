@@ -15,12 +15,156 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
   <script type="text/javascript" language="JavaScript">
 
+    window.addEventListener('load', function () {
+      const timetable = this.document.getElementById("timetable")
+      console.log("time table ", timetable)
+
+      let timeConstant = []
+      const allDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+      const sectionHeaders = []
+      let day_time = {}
+
+
+      timetable.querySelectorAll('section').forEach(section => {
+        const header = section.querySelector('h2.secHead').textContent;
+        const rows =  Array.from(section.querySelectorAll('table tbody tr'))
+        let time_c = new Set()
+
+        for(const row of rows) {
+
+             let rowCell = row.querySelectorAll('td');
+            //  console.log("row cell ", rowCell)
+
+             if (rowCell.length <= 0) rowCell = row.querySelectorAll('th')
+  
+
+
+          const [course, venue, instructor, dayTime] = rowCell
+          let dayTimeText = dayTime.textContent.toString()
+          let courseContent = course.textContent
+          let venueContent = venue.textContent
+          let instructorContent = instructor.textContent
+          
+          // console.log("day time ", [courseContent, venueContent, instructorContent, dayTimeText])
+
+          let processDayTime = dayTimeText.split(' ')
+          // console.log("processday time ", processDayTime)
+          let day = processDayTime[0].toLowerCase()
+          let time = processDayTime.slice(1).join('')
+          let key = day + time + header
+
+
+          // console.log("time ", time)
+          // console.log("key  ", key)
+
+
+          time_c.add(time)
+          if(!day_time[key]) day_time[key] = []
+          day_time[key].push({ course: courseContent, venue: venueContent, instructor: instructorContent })
+        }
+
+        sectionHeaders.push(header)
+        timeConstant.push(time_c)
+
+        
+        
+      })
+      // console.log("section headers are ", sectionHeaders)
+      // console.log("day time key ", day_time)
+      // console.log("time constants ", timeConstant)
+      // console.log("all day ", allDays)
+      
+      const newTimeTable = this.document.getElementById("newTimeTable")
+      let count = 0
+
+      const getRowCourseDetail = (arrCourse) => {
+        if(arrCourse.length <= 0) return ''
+        let courses = ''
+        for(const courseObj of arrCourse) {
+          courses += `
+          <div>
+          <ul>
+            <li> course: ${courseObj.course}</li>
+            <li> venue: ${courseObj.venue}</li>
+            <li> instructor: ${courseObj.instructor}</li>
+          </l>  
+          </div>
+
+          `
+        }
+
+        return courses
+
+      } 
+
+      function customSortMorning(a, b) {
+        const startTimeA = a.split('-')[0];
+        const startTimeB = b.split('-')[0];
+
+        const timeA = new Date(`2000-01-01 ${startTimeA}`);
+        const timeB = new Date(`2000-01-01 ${startTimeB}`);
+
+        return timeA - timeB;
+      }
+
+      function customSortEvening(a,b) {
+        const startTimeA = a.split('-')[0];
+        const startTimeB = b.split('-')[0];
+
+        const timeA = new Date(`2000-01-01 ${startTimeA}`);
+        const timeB = new Date(`2000-01-01 ${startTimeB}`);
+
+        return timeB - timeA;
+      }
+
+
+      for (let gTime of timeConstant) {
+        let secHeader = sectionHeaders[count]
+        let cTime =  Array.from(gTime).sort(secHeader.includes("Morning") ? customSortMorning : customSortEvening)
+
+        let newTable = `
+        <section>
+          <h2 class="secHead">${secHeader}</h2>
+        <table class="table2">
+          <tr>
+            <th>Day/Time</th>
+            ${cTime.map(t => `<th>${t}</th>`)}
+          </tr>
+  
+          ${allDays.map(day =>
+             `
+             <tr>
+              <th>${day.toUpperCase()}</th>
+              ${cTime.map(t =>
+                `
+                <td>
+                 ${day_time[day + t + secHeader] ? getRowCourseDetail(day_time[day + t + secHeader]) : ''}
+                </td>
+                `
+              )}
+                
+            </tr>
+            
+            `)}
+  
+  
+        </table>
+        </section>
+        
+        `
+      
+        
+        count++
+        newTimeTable.innerHTML += newTable
+      }
+      
+    })
+
     window.addEventListener("load", function () {
       console.log("fully loaded...")
       const timeTable = this.document.getElementById("timetable");
       const teacherTimeTable = this.document.getElementById('teacherTableContainer')
       console.log("time table", timeTable)
-
 
       timetable.querySelectorAll('section').forEach(section => {
         const header = section.querySelector('h2.secHead').textContent;
@@ -28,7 +172,14 @@
 
         const rows = Array.from(section.querySelectorAll('table tbody tr'));
         const newTableHTML = `
-        <table class="table2">${rows.map(row => {
+        <table class="table2">
+          <tr>
+          <th>Instructor</th>
+          <th>Venue(Block- Room)</th>
+          <th>Course</th>
+          <th>Day / Time</th>
+             </tr>
+          ${rows.map(row => {
 
           let rowCell = row.querySelectorAll('td');
           if (rowCell.length <= 0) {
@@ -76,9 +227,13 @@
 
   sections.forEach((section) => {
     const title = section.querySelector("h2").textContent;
+    const myDiv = document.createElement('div')
+    myDiv.className = "btn-div"
     const button = document.createElement("button");
+    button.className = "btn-gen"
     button.textContent = `Download ${title} PDF`;
-    section.appendChild(button);
+    myDiv.appendChild(button)
+    section.appendChild(myDiv);
 
     button.addEventListener("click", () => {
       const invoice = section;
@@ -179,6 +334,22 @@
       font-size: 1.0rem;
     }
 
+    .btn-div {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: center;
+      flex-direction: row;
+    }
+
+    .btn-gen {
+      padding: 10px;
+      border-radius: 30px;
+      cursor: pointer;
+      color: white;
+      background-color: black;
+    }
+
     .table2 td,
     th {
       border: 1px solid rgb(190, 190, 190);
@@ -228,6 +399,10 @@
       font-size: 16px;
       align-items: center;
     }
+
+    .hide {
+      display: none;
+    }
   </style>
 
 </head>
@@ -259,7 +434,7 @@
     {% block content %}
     {% load static %}
     {% for section in sections %}
-    <section>
+    <section class="hide">
       <h2 class="secHead">{{ section.section_id }} ({{ section.department }})</h2>
       <table class="table2">
         <colgroup>
@@ -270,12 +445,12 @@
           <col>
           <col>
         </colgroup>
-        <tr>
+        <!-- <tr>
           <th>Course</th>
           <th>Venue(Block- Room)</th>
           <th>Instructor</th>
           <th>Day / Time</th>
-        </tr>
+        </tr> -->
         {% for class in schedule %}
         {% if class.section == section.section_id %}
         <tr>
@@ -292,6 +467,10 @@
 
     {% endfor %}
     {% endblock %}
+
+    <div id="newTimeTable">
+
+    </div>
 
     <div id="teacherTableContainer">
 
