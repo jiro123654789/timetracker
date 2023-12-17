@@ -12,6 +12,12 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/carousel/">
 
      <style>
+
+        nav {
+         background-color: #021730;
+        }
+
+
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -26,6 +32,44 @@
           font-size: 3.5rem;
         }
       }
+
+      .carousel {
+        background-color: #ffc600;
+      }
+
+    
+.custom-container {
+      background-color: #FFF5CB; /* Change this to the desired color */
+      /* Add other styles as needed */
+    }
+
+    .ct-button {
+        border: #021730;
+        color: #021730;
+        background-color: #ffc600;
+        
+    }
+
+    .ct-button:hover {
+        background-color: #021730;
+        border: 0;
+        color: #ffc600;
+    }
+
+    .tc-button {
+        color: #ffc600;
+        background-color: #021730;
+        
+    }
+
+    .jumbotron {
+        background-color: #FFF5CB;
+    }
+
+    .custom-footer {
+        background-color: #021730;
+        color: #ffc600;
+    }
     </style>
 
     <link rel="stylesheet" type="text/css" href="static/css/index.css">
@@ -35,7 +79,8 @@
     <form id="form1">
         <header>
             <!--Navigation Bar-->
-			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<nav
+            class="navbar navbar-expand-md navbar-dark fixed-top">
                 <a class="navbar-brand" href="#"><b>TIMETABLE GENERATOR</b></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -75,34 +120,34 @@
         <div class="carousel-inner">
         <div class="carousel-item active">
             <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
-            <img src="static/img/CarouselBG.png" />
+            <img src="static/img/carousel.png" />
         <div class="container">
           <div class="carousel-caption text-left">
             <h1><b>Easy to Use.</b></h1>
             <p>A Simple and Easy to use Timetable Generation tool for Colleges and Universities. Click on the Help Button for Assistance in Generating the Timetable.</p>
-            <p><a class="btn btn-lg btn-primary" href="{% url 'help' %}" role="button">Help</a></p>
+            <p><a class="btn btn-lg tc-button" href="{% url 'help' %}" role="button">Help</a></p>
           </div>
         </div>
       </div>
       <div class="carousel-item">
         <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
-          <img src="static/img/CarouselBG.png" />
+          <img src="static/img/carousel.png" />
           <div class="container">
           <div class="carousel-caption">
             <h1><b>Efficient and Reliable.</b></h1>
             <p>An efficient and a reliable tool to generate and save your Timetable with collision avoidance. Learn more about TTGS.</p>
-            <p><a class="btn btn-lg btn-primary" href="{% url 'about' %}" role="button">Learn more</a></p>
+            <p><a class="btn btn-lg tc-button" href="{% url 'about' %}" role="button">Learn more</a></p>
           </div>
         </div>
       </div>
       <div class="carousel-item">
         <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><rect width="100%" height="100%" fill="#777"/></svg>
-          <img src="static/img/CarouselBG.png" />
+          <img src="static/img/carousel.png" />
           <div class="container">
           <div class="carousel-caption text-right">
             <h1><b>Simple and Non-Complex.</b></h1>
             <p>The Development Process is Simplified using a Clean and an Elegant User Interface with Minimal Complexities.</p>
-            <p><a class="btn btn-lg btn-primary" href="{% url 'login' %}" role="button">Generate Timetable</a></p>
+            <p><a class="btn btn-lg tc-button" href="{% url 'login' %}" role="button">Generate Timetable</a></p>
           </div>
         </div>
       </div>
@@ -118,7 +163,7 @@
   </div>
 
     <!--Jumbotron-->
-    <div class="container-fluid">
+    <div class="container-fluid custom-container">
     <div class="row jumbotron">
         <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
             <p class="lead">Welcome to TTGS!, a timetable management system for colleges and universities to schedule their organization's timetable.
@@ -126,7 +171,7 @@
             </p>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
-            <a href="{% url 'contact' %}"><button type="button" class="btn btn-outline-secondary btn-lg">Contact Us</button></a>
+            <a href="{% url 'contact' %}"><button type="button" class="btn ct-button btn-lg">Contact Us</button></a>
         </div>
     </div>
     </div>
@@ -181,8 +226,8 @@
     </div>
     </div>
     <!--Footer-->
-    <footer>
-        <div class="container-fluid padding">
+    <footer class="custom-footer">
+        <div class="container-fluid custom-footer padding">
         <div class="row text-center">
             <div class="col-md-4">
                 <hr class="light">

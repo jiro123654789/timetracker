@@ -5,8 +5,15 @@
   <title>{% block title %}{% endblock %}</title>
   <link href = "{% static "css/base.css" %}" rel="stylesheet">
 </head>
+<style>
+      .tc-button {
+        color: #ffc600;
+        background-color: #021730;
+    }
+
+</style>
 <body>
-  <div id="header">
+  <div id="header" style="background-color: #021730;">
     <span class="logo"><b>TIMETABLE GENERATOR</b></span>
     {% if request.user.is_authenticated %}
     <ul class="menu">

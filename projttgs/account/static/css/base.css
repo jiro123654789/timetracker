@@ -38,9 +38,8 @@ ol {
 #header {
     padding:10px 100px;
     font-size:14px;
-    background:#4d524f;
-    color:#4d524f;
     overflow:auto;
+    background: #021730;
 }
 
 #header .logo {
@@ -187,6 +186,12 @@ ul.messages li a.close {
     display:block;
     color:#fff;
 }
+
+.tc-button {
+    color: #ffc600;
+    background-color: #021730;
+}
+
 .social li.facebook { background:#3b5399; }
 .social li.twitter { background:#00cffa; }
 .social li.google { background:#de1710; }

@@ -21,9 +21,6 @@
 
 }
 
-body {
-
-}
 
 nav {
     font-family: sans-serif;
@@ -72,7 +69,7 @@ section .container .contactinfo
     top: 40px;
     width: 350px;
     height: calc(100% - 80px);
-    background: #0f3959;
+    background: #021730;
     z-index: 1;
     padding: 40px;
     display: flex;
@@ -83,7 +80,7 @@ section .container .contactinfo
 
 section .container .contactinfo h2
 {
-    color: #ffffff;
+    color: #ffc600;
     font-size: 24px;
     font-weight: 500;
 }
@@ -92,6 +89,7 @@ section .container .contactinfo .info
 {
     position: relative;
     margin: 20px 0;
+    color: #ffc600;
 }
 
 section .container .contactinfo li{
@@ -119,7 +117,7 @@ section .container .contactinfo li span:nth-child(1) i
 
 section .container .contactinfo li span:nth-child(2)
 {
-    color: #ffffff;
+    color: #ffc600;
     margin-left: 10px;
     font-weight: 300;
     opacity: 0.5;
@@ -220,10 +218,22 @@ section .container .contactForm .formBox .inputBox textarea
         outline: none;
 }
 
+nav {
+    font-family: sans-serif;
+    background-color: #021730;
+}
+
+
 section .container .contactForm .formBox .inputBox textarea
 {
     min-height: 120px;
 }
+
+.tc-button {
+        color: #ffc600;
+        background-color: #021730;
+        
+    }
 
 section .container .contactForm .formBox .inputBox span
 {
@@ -292,7 +302,7 @@ section .container .formBox .inputBox input[type=submit]:hover
 <body>
     <header>
             <!--Navigation Bar-->
-			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top">
                 <a class="navbar-brand" href="#"><b>TIMETABLE GENERATOR</b></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -378,7 +388,7 @@ section .container .formBox .inputBox input[type=submit]:hover
                         <span>Write Your Message Here...</span>
                     </div>
                     <div class="inputBox w100">
-                        <button class="btn" type="submit" >Send</button>
+                        <button class="btn tc-button" type="submit" >Send</button>
                     </div>
                 </div>
             </div>
